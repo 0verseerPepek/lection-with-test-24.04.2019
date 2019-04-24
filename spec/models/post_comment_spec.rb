@@ -1,0 +1,23 @@
+require 'rails_helper'
+
+RSpec.describe PostComment, type: :model do
+  let!(:user){create(:user)}
+
+  subject{
+     build(:post, user: user)
+     build(:post_comment, post: :post)
+  }
+  
+  context "Validation" do
+    it "should not be valid without body" do
+       subject.body = nil
+       expect(subject).to_not be_valid
+    end
+   
+    it { should validate_presence_of(:body) }
+  end
+  
+  context "Association" do
+    it { should belong_to(:post) }
+    it { should belong_to(:user) }
+  endend
